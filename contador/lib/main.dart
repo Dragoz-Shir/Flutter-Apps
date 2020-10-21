@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(new MyApp());
@@ -7,6 +7,12 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(context) {
-    return CupertinoApp(home: Text("holi"));
+    return MaterialApp(
+        home: Center(
+      child: Text(
+        "Holi",
+        style: TextStyle(color: Colors.white),
+      ),
+    ));
   }
 }
