@@ -1,15 +1,18 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  final stiloTexto = new TextStyle(fontSize: 20.0);
-  final int conteo = 10;
+class ContadorPage extends StatefulWidget {
+  @override
+  createState() => _ContadorPageState();
+}
+
+class _ContadorPageState extends State<ContadorPage> {
+  final _stiloTexto = new TextStyle(fontSize: 20.0);
+  int _conteo = 10;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("App Contador"),
+        title: Text("StatefulWidget"),
         centerTitle: true,
         elevation: 2.0,
       ),
@@ -19,18 +22,18 @@ class HomePage extends StatelessWidget {
           children: [
             Text(
               "Número de Holis: ",
-              style: stiloTexto,
+              style: _stiloTexto,
             ),
             Text(
-              "0",
-              style: stiloTexto,
+              "$_conteo",
+              style: _stiloTexto,
             )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print("holi +1");
+          setState(() => _conteo++);
         },
         child: Icon(Icons.add),
         elevation: 20.0,
