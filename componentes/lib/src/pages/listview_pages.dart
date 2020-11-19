@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'dart:async';
+
 class ListviewPage extends StatefulWidget {
   ListviewPage({Key key}) : super(key: key);
 
@@ -11,6 +13,7 @@ class _ListviewPageState extends State<ListviewPage> {
   List<int> _lista = new List();
   int _ultimoItem = 0;
   ScrollController _scrollController = new ScrollController();
+  bool _estaCargando = false;
 
   @override
   void initState() {
@@ -21,20 +24,31 @@ class _ListviewPageState extends State<ListviewPage> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         //print("llegue al final, tiempo de recargar");
-        _agregar5();
+        //_agregar5();
+        _fetchData();
       }
     });
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("ListView"),
-        centerTitle: true,
-      ),
-      body: _crearListView(),
-    );
+        appBar: AppBar(
+          title: Text("ListView"),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: [
+            _crearListView(),
+            _crearLoading(),
+          ],
+        ));
   }
 
   Widget _crearListView() {
@@ -57,5 +71,43 @@ class _ListviewPageState extends State<ListviewPage> {
       _lista.add(_ultimoItem);
     }
     setState(() {});
+  }
+
+  Future _fetchData() async {
+    _estaCargando = true;
+    setState(() {});
+    return new Timer(new Duration(seconds: 2), _peticionHTTP);
+  }
+
+  void _peticionHTTP() {
+    _estaCargando = false;
+    _scrollController.animateTo(_scrollController.position.pixels + 100,
+        duration: Duration(milliseconds: 250), curve: Curves.fastOutSlowIn);
+
+    _agregar5();
+  }
+
+  Widget _crearLoading() {
+    if (_estaCargando) {
+      return Column(
+        children: [
+          Row(
+            children: [
+              CircularProgressIndicator(
+                backgroundColor: Colors.red,
+                strokeWidth: 20.0,
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          SizedBox(
+            height: 15,
+          )
+        ],
+        mainAxisAlignment: MainAxisAlignment.end,
+      );
+    } else {
+      return Container();
+    }
   }
 }
