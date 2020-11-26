@@ -52,17 +52,30 @@ class _ListviewPageState extends State<ListviewPage> {
   }
 
   Widget _crearListView() {
-    return ListView.builder(
-        controller: _scrollController,
-        itemCount: _lista.length,
-        itemBuilder: (BuildContext context, int i) {
-          int imagen = _lista[i];
+    return RefreshIndicator(
+      onRefresh: _paraRefrescar,
+      child: ListView.builder(
+          controller: _scrollController,
+          itemCount: _lista.length,
+          itemBuilder: (BuildContext context, int i) {
+            int imagen = _lista[i];
 
-          return FadeInImage(
-              placeholder: AssetImage("assets/jar-loading.gif"),
-              image:
-                  NetworkImage("https://picsum.photos/500/300/?image=$imagen"));
-        });
+            return FadeInImage(
+                placeholder: AssetImage("assets/jar-loading.gif"),
+                image: NetworkImage(
+                    "https://picsum.photos/500/300/?image=$imagen"));
+          }),
+    );
+  }
+
+  Future<Null> _paraRefrescar() {
+    new Timer(Duration(seconds: 2), () {
+      _lista.clear();
+      _ultimoItem++;
+      _agregar5();
+    });
+    //new Timer(Duration(seconds: 2), _agregar5);
+    return Future.delayed(Duration(seconds: 2));
   }
 
   void _agregar5() {
