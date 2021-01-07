@@ -14,6 +14,7 @@ class Peliculas {
 }
 
 class Pelicula {
+  String peliculaDondeID;
   int voteCount;
   int id;
   bool video;
@@ -44,6 +45,7 @@ class Pelicula {
     this.adult,
     this.overview,
     this.releaseDate,
+    this.peliculaDondeID,
   });
 
   Pelicula.fromJsonMap(Map<String, dynamic> json) {
@@ -68,6 +70,14 @@ class Pelicula {
       return "https://tutaki.org.nz/wp-content/uploads/2019/04/no-image-1.png";
     } else {
       return "https://image.tmdb.org/t/p/w500/$posterPath";
+    }
+  }
+
+  getBackgroundImg() {
+    if (posterPath == null) {
+      return "https://tutaki.org.nz/wp-content/uploads/2019/04/no-image-1.png";
+    } else {
+      return "https://image.tmdb.org/t/p/w500/$backdropPath";
     }
   }
 }
